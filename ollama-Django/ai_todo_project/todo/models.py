@@ -1,5 +1,7 @@
 from django.db import models
 import uuid
+from typing import List
+from pydantic import BaseModel, Field
 # Create your models here.
 
 class TodoItem(models.Model):
@@ -10,4 +12,5 @@ class TodoItem(models.Model):
     completed = models.BooleanField(default=False)
     
     
-
+class AITodoItemSteps(BaseModel):
+    steps: List[str] = Field([], description = "This steps which need to be taken to complete the todo item")
