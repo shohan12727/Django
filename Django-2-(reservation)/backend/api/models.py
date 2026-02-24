@@ -13,5 +13,4 @@ class Reservation(models.Model):
     reservation_time = models.DateField(auto_now=True)
     comment = models.CharField(max_length=1000)
         
-
-
+        
