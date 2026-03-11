@@ -159,7 +159,8 @@ Instructions:
             # print("AI Prompt:\n", ai_prompt)
 
             # Call Ollama model
-            response = ollama.chat(model="llama3.2:1b", messages=[{"role": "user", "content": ai_prompt}])
+            # response = ollama.chat(model="llama3.2:1b", messages=[{"role": "user", "content": ai_prompt}])
+            response = ollama.chat(model="fredrezones55/Jan-code:Q4_K_M", messages=[{"role": "user", "content": ai_prompt}])
             content = response['message']['content'].strip()  # remove extra spaces/newlines
             # print("AI Response:\n", content)
 

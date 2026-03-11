@@ -12,5 +12,6 @@ class TodoItem(models.Model):
     completed = models.BooleanField(default=False)
     
     
+    
 class AITodoItemSteps(BaseModel):
     steps: List[str] = Field([], description = "This steps which need to be taken to complete the todo item")
