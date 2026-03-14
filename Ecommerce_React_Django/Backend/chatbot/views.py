@@ -94,3 +94,5 @@ def get_patient_reports(request):
     reports = PatientReport.objects.all().order_by("-created_at")
     serializer = PatientReportSerializer(reports, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
