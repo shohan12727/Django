@@ -92,6 +92,8 @@ Return **only** this formatted text. Do not add any explanations or extra text.
 @api_view(["GET"])
 def get_patient_reports(request):
     reports = PatientReport.objects.all().order_by("-created_at")
+    print(reports.query)
+    
     serializer = PatientReportSerializer(reports, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
