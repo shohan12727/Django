@@ -39,3 +39,12 @@ class Order(models.Model):
     ]
     place_at = models.Model()
     payment_status = models.Model(max_length=1, choices=PAYMENT_STATUS_CHOICES)
+
+
+class Address(models.Model):
+    street = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    customer = models.OneToOneField(
+        Customer, on_delete=models.CASCADE, primary_key=True
+    )
+     
