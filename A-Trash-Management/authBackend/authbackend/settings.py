@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "accounts",
     "student",
+    "consumer",
 ]
 
 AUTH_USER_MODEL = "accounts.CustomUser"
