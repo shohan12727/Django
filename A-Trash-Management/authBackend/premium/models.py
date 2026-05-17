@@ -13,11 +13,11 @@ class Premium(models.Model):
         ("yearly", "yearly"),
         ("lifeTime", "lifeTime"),
     ]
-    bailing_cycle = models.CharField(
+    billing_cycle = models.CharField(
         max_length=15, choices=BILLING_CYCLE_CHOICES, default="monthly"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"{self.name}"
+        return f"Name: {self.name}"
