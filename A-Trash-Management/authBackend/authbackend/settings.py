@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     "consumer",
     "product",
     "premium",
+    "author",
+    "posts",
 ]
 
 AUTH_USER_MODEL = "accounts.CustomUser"
