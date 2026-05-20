@@ -10,8 +10,8 @@ urlpatterns = [
     path("api/consumer/", include("consumer.urls")),
     path("api/product/", include("product.urls")),
     path("api/premium/", include("premium.urls")),
-    path("api/author/", include("author.urls")),
-    path("api/posts/", include("posts.urls")),
+    path("api/", include("author.urls")),
+    path("api/", include("posts.urls")),
 ]
 
 

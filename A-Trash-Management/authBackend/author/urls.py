@@ -1,6 +1,7 @@
-from django.urls import path 
-# from .views import StudentListCreateAPIView
+from rest_framework.routers import DefaultRouter
+from .views import AuthorViewSet
 
-urlpatterns = [
-    # path("/", StudentListCreateAPIView.as_view())
-]
+router = DefaultRouter()
+router.register(r'authors', AuthorViewSet)
+
+urlpatterns = router.urls
