@@ -6,3 +6,5 @@ from .serializers import PostSerializer
 class PostViewset(viewsets.ModelViewSet):
     queryset = PostModel.objects.all()
     serializer_class = PostSerializer
+    
+    
