@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "premium",
     "author",
     "posts",
+    "events"
 ]
 
 AUTH_USER_MODEL = "accounts.CustomUser"
