@@ -49,44 +49,6 @@ export default function AboutPage() {
 
       </section>
 
-      {/* 3. STATIC HISTORICAL TIMELINE */}
-      <section className="space-y-12">
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold text-gray-900 tracking-tight sm:text-3xl">
-            How We Got Here
-          </h2>
-          <p className="text-sm text-gray-500">
-            A quick glimpse into our milestones and continuous growth.
-          </p>
-        </div>
-
-        {/* Timeline Grid layout */}
-        <div className="relative border-l border-gray-200 ml-4 md:ml-32 space-y-8">
-          {milestones.map((milestone, idx) => (
-            <div key={idx} className="relative pl-6 group">
-              
-              {/* Timeline Indicator Node */}
-              <div className="absolute -left-1.5 top-1.5 bg-gray-200 border-4 border-white h-4 w-4 rounded-full group-hover:bg-blue-600 transition duration-200" />
-              
-              {/* Year Label Float Left (Desktop Only) */}
-              <div className="hidden md:block absolute -left-28 top-0.5 text-right w-20 font-extrabold text-lg text-gray-400 group-hover:text-blue-600 transition duration-200">
-                {milestone.year}
-              </div>
-
-              {/* Box Content Card */}
-              <div className="bg-white border border-gray-100 p-5 rounded-xl shadow-sm hover:shadow-md transition max-w-2xl">
-                {/* Mobile Year Badge */}
-                <span className="inline-block md:hidden bg-blue-50 text-blue-600 font-bold text-xs px-2 py-0.5 rounded mb-2">
-                  {milestone.year}
-                </span>
-                <h3 className="font-bold text-gray-900 text-base">{milestone.title}</h3>
-                <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{milestone.desc}</p>
-              </div>
-
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* 4. VALUES CORE STRIP */}
       <section className="bg-gray-900 text-white rounded-2xl p-8 md:p-12 text-center space-y-6">
