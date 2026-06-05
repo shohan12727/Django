@@ -27,7 +27,7 @@ export default function Navbar() {
             <Link href="/" className="text-gray-300 hover:text-white font-medium transition duration-200">
               Home
             </Link>
-            <Link href="/laptops" className="text-gray-300 hover:text-white font-medium transition duration-200">
+            <Link href="/laptop" className="text-gray-300 hover:text-white font-medium transition duration-200">
               Browse Laptops
             </Link>
             

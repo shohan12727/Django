@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from .models import Laptop
+from .serializers import LaptopSerializer
 
-# Create your views here.
+
+class LaptopViewSet(ModelViewSet):
+    queryset = Laptop.objects.all()
+    serializer_class = LaptopSerializer
