@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function LaptopDetailPage() {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
+  const { isAuthenticated, loading: authLoading } = useAuth();
 
   const [laptop, setLaptop] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,6 +31,14 @@ export default function LaptopDetailPage() {
     is_featured: false,
     is_available: true,
   });
+
+  // Check authentication and redirect to login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      const currentPath = `/laptop/${id}`;
+      router.push(`/pages/login?returnUrl=${encodeURIComponent(currentPath)}`);
+    }
+  }, [isAuthenticated, authLoading, router, id]);
 
   useEffect(() => {
     const fetchLaptop = async () => {

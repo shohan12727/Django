@@ -1,103 +1,105 @@
-/**
- * Auth Context Provider
- * 
- * Manages authentication state and provides auth methods across the application.
- * This context is wrapped at the root level to make auth available everywhere.
- * 
- * Features:
- * - User authentication state
- * - Login/Logout/Signup methods
- * - Token management
- * - Protected route handling
- */
+"use client";
 
-'use client';
-
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [returnUrl, setReturnUrl] = useState("/laptops");
 
-  // Check if user is already logged in on mount
+  // Initialize auth state from localStorage
   useEffect(() => {
-    const checkAuth = async () => {
+    const initializeAuth = async () => {
       try {
-        // TODO: Call API to verify current session/token
-        // const response = await fetch('/api/auth/me');
-        // if (response.ok) {
-        //   const userData = await response.json();
-        //   setUser(userData);
-        // }
-      } catch (error) {
-        console.error('Auth check failed:', error);
+        const token = localStorage.getItem("access_token");
+        if (token) {
+          // Optionally validate token with backend
+          const userData = JSON.parse(localStorage.getItem("user") || "null");
+          setUser(userData);
+          setIsAuthenticated(true);
+        }
+      } catch (err) {
+        console.error("Auth initialization error:", err);
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("user");
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
-    checkAuth();
+    initializeAuth();
   }, []);
 
-  const login = async (email, password) => {
-    setIsLoading(true);
+  const login = async (credentials) => {
+    setLoading(true);
+    setError("");
+
     try {
-      // TODO: Implement login API call
-      console.log('Login:', email);
+      const response = await fetch("http://127.0.0.1:8000/api/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      // Store tokens
+      localStorage.setItem("access_token", data.access);
+      localStorage.setItem("refresh_token", data.refresh);
+      localStorage.setItem("user", JSON.stringify(data.user || { username: credentials.username }));
+
+      setUser(data.user || { username: credentials.username });
+      setIsAuthenticated(true);
+      setError("");
+
+      return data;
+    } catch (err) {
+      setError(err.message);
+      throw err;
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const logout = async () => {
-    setIsLoading(true);
+  const logout = () => {
+    setLoading(true);
     try {
-      // TODO: Implement logout API call
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("user");
       setUser(null);
+      setIsAuthenticated(false);
+      setError("");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const signup = async (data) => {
-    setIsLoading(true);
-    try {
-      // TODO: Implement signup API call
-      console.log('Signup:', data);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const updateProfile = async (data) => {
-    setIsLoading(true);
-    try {
-      // TODO: Implement profile update API call
-      setUser({ ...user, ...data });
-    } finally {
-      setIsLoading(false);
-    }
+  const setReturnUrlPath = (path) => {
+    setReturnUrl(path);
   };
 
   const value = {
     user,
-    isLoading,
-    isAuthenticated: !!user,
+    isAuthenticated,
+    loading,
+    error,
+    returnUrl,
     login,
     logout,
-    signup,
-    updateProfile,
+    setReturnUrlPath,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
-  return context;
-};
+}

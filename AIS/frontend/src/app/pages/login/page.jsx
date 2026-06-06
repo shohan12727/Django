@@ -1,8 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { login, isAuthenticated, loading: authLoading } = useAuth();
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -11,6 +18,14 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  // If already authenticated, redirect to returnUrl or /laptops
+  useEffect(() => {
+    if (isAuthenticated && !authLoading) {
+      const returnUrl = searchParams.get("returnUrl") || "/";
+      router.push(returnUrl);
+    }
+  }, [isAuthenticated, authLoading, router, searchParams]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -27,34 +42,10 @@ export default function LoginPage() {
     setSuccess("");
 
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/login/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.username,
-            password: formData.password,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
-
-      console.log("Login Success:", data);
-
+      await login(formData);
       setSuccess("Login successful!");
-
-      // Example:
-      // localStorage.setItem("access", data.access);
-      // localStorage.setItem("refresh", data.refresh);
-
+      // Redirect home page
+      redirect('/')
     } catch (err) {
       setError(err.message);
       console.error(err);
@@ -66,15 +57,11 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-center mb-8">
-          Login
-        </h1>
+        <h1 className="text-3xl font-bold text-center mb-8">Login</h1>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block mb-2 font-medium">
-              Username
-            </label>
+            <label className="block mb-2 font-medium">Username</label>
 
             <input
               type="text"
@@ -88,9 +75,7 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block mb-2 font-medium">
-              Password
-            </label>
+            <label className="block mb-2 font-medium">Password</label>
 
             <input
               type="password"
@@ -103,17 +88,9 @@ export default function LoginPage() {
             />
           </div>
 
-          {error && (
-            <div className="text-red-500 text-sm">
-              {error}
-            </div>
-          )}
+          {error && <div className="text-red-500 text-sm">{error}</div>}
 
-          {success && (
-            <div className="text-green-600 text-sm">
-              {success}
-            </div>
-          )}
+          {success && <div className="text-green-600 text-sm">{success}</div>}
 
           <button
             type="submit"
@@ -122,6 +99,15 @@ export default function LoginPage() {
           >
             {loading ? "Logging in..." : "Login"}
           </button>
+
+          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <span>Not Register?</span>
+            <Link href="/pages/register">
+              <span className="text-blue-600 hover:text-blue-500 font-medium underline underline-offset-4 transition-colors">
+                Register
+              </span>
+            </Link>
+          </div>
         </form>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import Navbar from "@/components/navbar/page";
 
 export default function LaptopsPage() {
   const router = useRouter();
@@ -59,6 +60,7 @@ export default function LaptopsPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-5">
       <div className="max-w-7xl mx-auto">
+        <Navbar/>
 
         {/* Header */}
         <div className="mb-10">
