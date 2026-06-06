@@ -9,7 +9,7 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [returnUrl, setReturnUrl] = useState("/laptops");
+  const [returnUrl, setReturnUrl] = useState("/laptop");
 
   // Initialize auth state from localStorage
   useEffect(() => {
